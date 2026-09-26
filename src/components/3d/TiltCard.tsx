@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 interface TiltCardProps {
   children: React.ReactNode;
@@ -14,11 +14,10 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   glare = true,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
+  const glareRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse') return;
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -30,32 +29,27 @@ export const TiltCard: React.FC<TiltCardProps> = ({
     const rX = ((y - centerY) / centerY) * -maxTilt;
     const rY = ((x - centerX) / centerX) * maxTilt;
 
-    setRotateX(rX);
-    setRotateY(rY);
+    cardRef.current.style.transform = `perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg)`;
 
-    if (glare) {
-      setGlarePos({
-        x: (x / rect.width) * 100,
-        y: (y / rect.height) * 100,
-        opacity: 0.18,
-      });
+    if (glareRef.current) {
+      glareRef.current.style.background = `radial-gradient(circle at ${(x / rect.width) * 100}% ${(y / rect.height) * 100}%, rgba(255, 255, 255, 0.28) 0%, transparent 60%)`;
+      glareRef.current.style.opacity = glare ? '1' : '0';
     }
   };
 
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setGlarePos(prev => ({ ...prev, opacity: 0 }));
+  const handlePointerLeave = () => {
+    if (cardRef.current) cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+    if (glareRef.current) glareRef.current.style.opacity = '0';
   };
 
   return (
     <div
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       className={`relative transform-gpu transition-transform duration-200 ease-out preserve-3d ${className}`}
       style={{
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+        transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)',
       }}
     >
       {children}
@@ -63,10 +57,8 @@ export const TiltCard: React.FC<TiltCardProps> = ({
       {glare && (
         <div
           className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300 z-20"
-          style={{
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, 0.4) 0%, transparent 60%)`,
-            opacity: glarePos.opacity,
-          }}
+          ref={glareRef}
+          style={{ opacity: 0 }}
         />
       )}
     </div>

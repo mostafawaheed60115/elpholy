@@ -4,10 +4,10 @@ import { Radio, RefreshCw, Eye, Sparkles } from 'lucide-react';
 
 export const SatelliteHeroCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [signalLocked, setSignalLocked] = useState(true);
   const [satelliteName, setSatelliteName] = useState('نايل سات 301');
   const [signalStrength, setSignalStrength] = useState(99);
   const [isRotating, setIsRotating] = useState(true);
+  const isRotatingRef = useRef(isRotating);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -19,7 +19,7 @@ export const SatelliteHeroCanvas: React.FC = () => {
     const height = container.clientHeight || 450;
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 2, 7.5);
+    camera.position.set(0, 2, 8.2);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -27,7 +27,7 @@ export const SatelliteHeroCanvas: React.FC = () => {
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
 
@@ -39,6 +39,7 @@ export const SatelliteHeroCanvas: React.FC = () => {
 
     // Group for entire assembly
     const mainGroup = new THREE.Group();
+    mainGroup.position.y = 1.1;
     scene.add(mainGroup);
 
     // 1. Lighting
@@ -238,7 +239,7 @@ export const SatelliteHeroCanvas: React.FC = () => {
     satelliteGroup.add(rightWing);
 
     // 7. Floating Space Particles
-    const particleCount = 120;
+    const particleCount = 80;
     const particleGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -291,39 +292,49 @@ export const SatelliteHeroCanvas: React.FC = () => {
     container.addEventListener('mousemove', handlePointerMove);
     container.addEventListener('touchmove', handlePointerMove, { passive: true });
 
-    // Handle Resize
+    // Keep the renderer at the actual canvas size without rebuilding the scene.
     const handleResize = () => {
-      if (!container) return;
       const w = container.clientWidth;
       const h = container.clientHeight;
+      if (!w || !h) return;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     // Initial Angle
     mainGroup.rotation.x = 0.25;
     mainGroup.rotation.y = -0.4;
 
     // Animation Loop
-    let animationFrameId: number;
-    let clock = new THREE.Clock();
+    let animationFrameId = 0;
+    const clock = new THREE.Timer();
+    clock.connect(document);
+    let isInViewport = true;
+    let isDocumentVisible = document.visibilityState === 'visible';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const animate = () => {
+      if (!isInViewport || !isDocumentVisible) {
+        animationFrameId = 0;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      clock.update();
+      const elapsedTime = clock.getElapsed();
 
       // Smooth dish rotation towards target with gentle breathing
-      const idleSwayY = isRotating ? Math.sin(elapsedTime * 0.8) * 0.08 : 0;
-      const idleSwayX = isRotating ? Math.cos(elapsedTime * 0.7) * 0.05 : 0;
+      const idleSwayY = isRotatingRef.current && !prefersReducedMotion ? Math.sin(elapsedTime * 0.8) * 0.08 : 0;
+      const idleSwayX = isRotatingRef.current && !prefersReducedMotion ? Math.cos(elapsedTime * 0.7) * 0.05 : 0;
 
       mainGroup.rotation.y += (targetRotationY + idleSwayY - mainGroup.rotation.y) * 0.05;
       mainGroup.rotation.x += (targetRotationX + idleSwayX - mainGroup.rotation.x) * 0.05;
 
       // Animate Signal Waves
       waveRings.forEach((ring, index) => {
-        const offset = (elapsedTime * 1.6 + (index * 0.5)) % 2;
+        const offset = prefersReducedMotion ? index * 0.35 : (elapsedTime * 1.6 + (index * 0.5)) % 2;
         const scale = 1 + offset * 3.5;
         ring.scale.set(scale, scale, scale);
         ring.position.z = 2.6 + offset * 1.8;
@@ -333,25 +344,40 @@ export const SatelliteHeroCanvas: React.FC = () => {
 
       // Orbiting Micro Satellite
       const satOrbitRadius = 4.8;
-      const satAngle = elapsedTime * 0.45;
+      const satAngle = prefersReducedMotion ? 0.8 : elapsedTime * 0.45;
       satelliteGroup.position.x = Math.cos(satAngle) * satOrbitRadius;
       satelliteGroup.position.y = 2.2 + Math.sin(satAngle * 1.5) * 0.8;
       satelliteGroup.position.z = Math.sin(satAngle) * satOrbitRadius - 1;
       satelliteGroup.rotation.y = -satAngle;
 
       // Slowly rotate space particles
-      particles.rotation.y = elapsedTime * 0.02;
-      particles.rotation.x = elapsedTime * 0.01;
+      if (!prefersReducedMotion) {
+        particles.rotation.y = elapsedTime * 0.02;
+        particles.rotation.x = elapsedTime * 0.01;
+      }
 
       renderer.render(scene, camera);
     };
 
     animate();
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      isInViewport = entry.isIntersecting;
+      if (isInViewport && isDocumentVisible && !animationFrameId) animate();
+    }, { rootMargin: '100px' });
+    intersectionObserver.observe(container);
+    const handleVisibilityChange = () => {
+      isDocumentVisible = document.visibilityState === 'visible';
+      if (isDocumentVisible && isInViewport && !animationFrameId) animate();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Cleanup
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clock.dispose();
       container.removeEventListener('mousemove', handlePointerMove);
       container.removeEventListener('touchmove', handlePointerMove);
       renderer.dispose();
@@ -364,6 +390,10 @@ export const SatelliteHeroCanvas: React.FC = () => {
       poleGeometry.dispose();
       poleMaterial.dispose();
     };
+  }, []);
+
+  useEffect(() => {
+    isRotatingRef.current = isRotating;
   }, [isRotating]);
 
   // Periodic signal meter micro fluctuation
@@ -383,7 +413,7 @@ export const SatelliteHeroCanvas: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-[270px] sm:h-[360px] md:h-[460px] lg:h-[500px] flex items-center justify-center">
+    <div className="relative flex h-[270px] w-full items-center justify-center sm:h-[340px] lg:h-[400px]">
       {/* Three.js Canvas Container - with touch-action pan-y so vertical scrolling works freely on phones */}
       <div 
         ref={containerRef} 

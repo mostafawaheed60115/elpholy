@@ -14,8 +14,8 @@ export function useCatalog() {
     setFetchError(null);
 
     const endpoints = [
-      `/public/stores/${config.store.slug}`,
-      `/public/stores/${config.store.slug}/catalog`,
+      `/stores/${config.store.slug}`,
+      `/stores/${config.store.slug}/catalog`,
       `/elpholy-ai-storefront-brief.json`
     ];
 

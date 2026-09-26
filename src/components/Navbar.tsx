@@ -16,10 +16,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-6xl mx-auto px-3 sm:px-6 h-20 sm:h-24 md:h-26 flex items-center justify-between">
         
         {/* Brand Logo & Name */}
-        <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-4">
           <button
             onClick={onBackToHome}
-            className="flex items-center gap-2.5 sm:gap-4 group text-right cursor-pointer min-w-0"
+            className="group flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 text-right sm:gap-4"
           >
             {/* Enlarged Prominent Logo */}
             <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-xl sm:rounded-2xl overflow-hidden bg-white p-1 shadow-xl border-2 border-white/20 transition-transform duration-300 group-hover:scale-105 shrink-0 flex items-center justify-center">

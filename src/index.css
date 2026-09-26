@@ -4,57 +4,114 @@
   --color-egyptian: #283793;
   --color-egyptian-dark: #1b266b;
   --color-egyptian-light: #3a4bb8;
-  --color-indigo-dark: #25213B;
+  --color-indigo-dark: #25213b;
   --color-indigo-surface: #1e1a32;
-  --color-orange-brand: #F49013;
+  --color-orange-brand: #f49013;
   --color-orange-hover: #e07f08;
   --color-orange-light: #ffaa3b;
-  --color-lavender-bg: #E8E4F1;
-  --color-ghost-bg: #F5F3FA;
+  --color-lavender-bg: #e8e4f1;
+  --color-ghost-bg: #f5f3fa;
   --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  --ghost-white: #F5F3FA;
-  --lavender: #E8E4F1;
+  font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #25213b;
+  background: #f5f3fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-feature-settings: 'kern';
+  --ghost-white: #f5f3fa;
+  --lavender: #e8e4f1;
   --egyptian-blue: #283793;
-  --space-indigo: #25213B;
-  --carrot-orange: #F49013;
-  font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --space-indigo: #25213b;
+  --carrot-orange: #f49013;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
+  min-width: 320px;
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
   direction: rtl;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: var(--ghost-white);
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ghost-white);
   color: var(--space-indigo);
-  overflow-x: hidden;
-  font-family: 'Cairo', system-ui, sans-serif;
+  font-family: inherit;
 }
 
-/* Custom modern scrollbar */
+button,
+input,
+a {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid #f49013;
+  outline-offset: 3px;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: #f49013;
+  color: #fff;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #E8E4F1;
+  background: #e8e4f1;
 }
 
 ::-webkit-scrollbar-thumb {
+  border: 2px solid #e8e4f1;
+  border-radius: 999px;
   background: #283793;
-  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #F49013;
+  background: #f49013;
 }
 
-/* 3D and Glow Effects */
 .perspective-1000 {
   perspective: 1000px;
 }
@@ -68,18 +125,8 @@ body {
 }
 
 @keyframes pulse-signal {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
+  0% { transform: scale(0.8); opacity: 0.65; }
+  100% { transform: scale(1.45); opacity: 0; }
 }
 
 .animate-signal {
@@ -87,12 +134,8 @@ body {
 }
 
 @keyframes float-slow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(1deg);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .animate-float {
@@ -100,14 +143,29 @@ body {
 }
 
 @keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 180ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

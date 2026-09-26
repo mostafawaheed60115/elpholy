@@ -14,16 +14,18 @@ export const CategoryList: React.FC<CategoryListProps> = ({
   products,
   onSelectCategory,
 }) => {
-  const getProductCount = (categoryId: string) => {
-    return products.filter((p) => p.categoryId === categoryId).length;
-  };
+  const productCounts = new Map<string, number>();
+  products.forEach(({ categoryId, isActive }) => {
+    if (!isActive) return;
+    productCounts.set(categoryId, (productCounts.get(categoryId) ?? 0) + 1);
+  });
 
   return (
-    <section id="categories-section" className="py-10 sm:py-18 bg-[#F5F3FA] text-[#25213B]">
+    <section id="categories-section" className="bg-gradient-to-b from-[#F5F3FA] to-white py-12 text-[#25213B] sm:py-16">
       <div className="max-w-6xl mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+        <div className="mx-auto mb-8 max-w-xl text-center sm:mb-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#283793]/10 text-[#283793] text-xs font-bold mb-2">
             <Sparkles className="w-3.5 h-3.5 text-[#F49013]" />
             <span>الأقسام المعتمدة</span>
@@ -39,24 +41,26 @@ export const CategoryList: React.FC<CategoryListProps> = ({
         {/* 11 Categories Clean Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
           {categories.map((cat) => {
-            const count = getProductCount(cat.id);
+            const count = productCounts.get(cat.id) ?? 0;
 
             return (
-              <div
+              <button
                 key={cat.id}
+                type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className="cursor-pointer"
+                aria-label={`${cat.name}، ${count} منتجات، عرض القسم`}
+                className="w-full rounded-3xl text-right focus-visible:outline-offset-4"
               >
                 <TiltCard maxTilt={8} glare={true} className="h-full">
-                  <div className="h-full flex flex-col bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-gray-200/80 hover:border-[#283793]/50 shadow-xs hover:shadow-xl transition-all duration-300 group">
+                  <div className="group flex h-full flex-col rounded-2xl border border-gray-200/80 bg-white p-3 text-right shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#283793]/40 hover:shadow-xl sm:rounded-3xl sm:p-4">
                     
                     {/* Category Image */}
-                    <div className="relative w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 mb-2.5 sm:mb-3 flex items-center justify-center border border-gray-100">
+                    <div className="relative mb-2.5 flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-gray-100 bg-gray-50 sm:mb-3 sm:rounded-2xl">
                       <img
                         src={cat.imageUrl}
                         alt={cat.name}
                         loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLElement).style.display = 'none';
                         }}
@@ -71,11 +75,11 @@ export const CategoryList: React.FC<CategoryListProps> = ({
 
                     {/* Category Name & Action */}
                     <div className="flex-1 flex flex-col justify-between pt-0.5">
-                      <h3 className="font-extrabold text-xs sm:text-base text-[#25213B] group-hover:text-[#283793] transition line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] mb-1.5 sm:mb-2 leading-snug">
+                      <h3 className="mb-1.5 line-clamp-2 min-h-[2.25rem] text-sm font-extrabold leading-snug text-[#25213B] transition-colors group-hover:text-[#283793] sm:mb-2 sm:min-h-[2.5rem] sm:text-base">
                         {cat.name}
                       </h3>
 
-                      <div className="flex items-center justify-between text-[11px] sm:text-xs text-gray-400 group-hover:text-[#F49013] font-bold pt-1.5 sm:pt-2 border-t border-gray-100 transition">
+                      <div className="flex items-center justify-between border-t border-gray-100 pt-2 text-[11px] font-bold text-gray-500 transition-colors group-hover:text-[#F49013] sm:text-xs">
                         <span>عرض المنتجات</span>
                         <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:-translate-x-1" />
                       </div>
@@ -83,7 +87,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
 
                   </div>
                 </TiltCard>
-              </div>
+              </button>
             );
           })}
         </div>

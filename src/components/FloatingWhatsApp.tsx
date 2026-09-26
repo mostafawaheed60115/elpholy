@@ -65,9 +65,8 @@ export const FloatingWhatsApp: React.FC = () => {
 
       {/* Main Floating Trigger Button */}
       <div className="relative group">
-        {/* Ripple effect rings */}
-        <span className="absolute -inset-1 rounded-full bg-emerald-500 opacity-60 animate-ping pointer-events-none" />
-        <span className="absolute -inset-2 rounded-full bg-emerald-400/30 blur-xs pointer-events-none" />
+        {/* Quiet halo keeps the action visible without a constant pulsing animation. */}
+        <span className="pointer-events-none absolute -inset-1 rounded-full bg-emerald-500/20 transition-opacity group-hover:opacity-80" />
 
         <button
           onClick={() => setIsOpen(!isOpen)}
