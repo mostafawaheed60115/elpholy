@@ -13,16 +13,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#25213B]/95 backdrop-blur-md border-b border-white/10 text-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-22 sm:h-26 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 h-20 sm:h-24 md:h-26 flex items-center justify-between">
         
         {/* Brand Logo & Name */}
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
           <button
             onClick={onBackToHome}
-            className="flex items-center gap-3 sm:gap-4 group text-right cursor-pointer"
+            className="flex items-center gap-2.5 sm:gap-4 group text-right cursor-pointer min-w-0"
           >
             {/* Enlarged Prominent Logo */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-2xl overflow-hidden bg-white p-1 shadow-xl border-2 border-white/20 transition-transform duration-300 group-hover:scale-105 shrink-0 flex items-center justify-center">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-xl sm:rounded-2xl overflow-hidden bg-white p-1 shadow-xl border-2 border-white/20 transition-transform duration-300 group-hover:scale-105 shrink-0 flex items-center justify-center">
               <img
                 src="/logo.jpeg"
                 alt="الفولي لخدمات الدش"
@@ -32,11 +32,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
               />
             </div>
-            <div>
-              <span className="text-xl sm:text-2xl md:text-3xl font-black text-white group-hover:text-[#F49013] transition block leading-tight">
+            <div className="min-w-0">
+              <span className="text-base sm:text-2xl md:text-3xl font-black text-white group-hover:text-[#F49013] transition block leading-tight truncate">
                 الفولي لخدمات الدش
               </span>
-              <span className="text-xs sm:text-sm text-[#E8E4F1]/80 font-medium">
+              <span className="text-[10px] sm:text-xs md:text-sm text-[#E8E4F1]/80 font-medium block truncate">
                 المركز المعتمد للستالايت والدش
               </span>
             </div>
@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
 
         {/* Minimal Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Facebook Link Icon */}
           <a
             href={CONTACT_INFO.facebookUrl}
@@ -75,11 +75,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <a
             href={`tel:${CONTACT_INFO.phone}`}
             title="رقم التواصل: 01004803335"
-            className="py-2 px-2.5 sm:px-3 rounded-xl bg-white/5 hover:bg-white/15 text-gray-200 hover:text-[#F49013] transition flex items-center gap-1.5 text-xs font-bold"
+            className="p-2 sm:py-2 sm:px-3 rounded-xl bg-white/5 hover:bg-white/15 text-gray-200 hover:text-[#F49013] transition flex items-center gap-1.5 text-xs font-bold"
           >
             <Phone className="w-4 h-4 text-[#F49013] shrink-0" />
             <span className="hidden md:inline">رقم التواصل:</span>
-            <span dir="ltr" className="font-mono font-bold tracking-wider">01004803335</span>
+            <span dir="ltr" className="hidden sm:inline font-mono font-bold tracking-wider">01004803335</span>
           </a>
 
           {/* WhatsApp Direct Chat */}
@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             href={CONTACT_INFO.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="py-2 px-3 sm:px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md shadow-emerald-950/20 transition"
+            className="py-2 px-2.5 sm:px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md shadow-emerald-950/20 transition"
           >
             <MessageCircle className="w-4 h-4" />
             <span className="hidden sm:inline">واتساب</span>

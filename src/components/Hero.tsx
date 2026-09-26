@@ -5,36 +5,36 @@ import { MessageCircle, Phone, ArrowDown } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative bg-gradient-to-b from-[#25213B] via-[#1e1a32] to-[#25213B] text-white py-10 sm:py-16 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-[#25213B] via-[#1e1a32] to-[#25213B] text-white py-8 sm:py-16 overflow-hidden">
       {/* Subtle ambient lighting */}
       <div className="absolute top-1/4 -right-20 w-80 h-80 bg-[#283793]/30 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-5 -left-20 w-80 h-80 bg-[#F49013]/15 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
           
           {/* Hero Content */}
-          <div className="lg:col-span-7 text-center lg:text-right space-y-5">
-            <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[#F49013] text-xs font-bold border border-[#F49013]/30">
+          <div className="lg:col-span-7 text-center lg:text-right space-y-4 sm:space-y-5">
+            <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[#F49013] text-[11px] sm:text-xs font-bold border border-[#F49013]/30">
               المركز المعتمد لمستلزمات الستالايت والدش
             </span>
 
-            <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
               الفولي لخدمات <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F49013] to-[#ffaa3b]">
                 الدش والستالايت
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-[#E8E4F1]/85 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="text-xs sm:text-base text-[#E8E4F1]/85 leading-relaxed max-w-xl mx-auto lg:mx-0">
               المتجر الرسمي لبيع وتوريد كافة مستلزمات الدش، الرسيفرات، الكابلات، الشاشات، وقطع الغيار الأصلية بأعلى جودة وضمان.
             </p>
 
             {/* Quick Actions */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-2">
               <a
                 href="#categories-section"
-                className="px-6 py-3 rounded-2xl bg-[#F49013] hover:bg-[#e07f08] text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-[#F49013]/25 transition transform hover:-translate-y-0.5 active:scale-95"
+                className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#F49013] hover:bg-[#e07f08] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#F49013]/25 transition transform hover:-translate-y-0.5 active:scale-95 min-h-[44px]"
               >
                 <span>تصفح الأقسام</span>
                 <ArrowDown className="w-4 h-4" />
@@ -44,7 +44,7 @@ export const Hero: React.FC = () => {
                 href={CONTACT_INFO.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center gap-2 shadow-md transition"
+                className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition min-h-[44px]"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>طلب واستفسار واتساب</span>
@@ -52,7 +52,7 @@ export const Hero: React.FC = () => {
 
               <a
                 href={`tel:${CONTACT_INFO.phone}`}
-                className="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm flex items-center gap-2 transition"
+                className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition min-h-[44px]"
               >
                 <Phone className="w-4 h-4 text-[#F49013]" />
                 <span className="flex items-center gap-1.5">
@@ -65,7 +65,7 @@ export const Hero: React.FC = () => {
 
           {/* 3D Satellite Interactive Scene */}
           <div className="lg:col-span-5 flex justify-center items-center">
-            <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-3xl p-2 backdrop-blur-sm shadow-xl">
+            <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-1.5 sm:p-2 backdrop-blur-sm shadow-xl">
               <SatelliteHeroCanvas />
             </div>
           </div>

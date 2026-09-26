@@ -383,43 +383,44 @@ export const SatelliteHeroCanvas: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-[440px] md:h-[500px] lg:h-[540px] flex items-center justify-center">
-      {/* Three.js Canvas Container */}
+    <div className="relative w-full h-[270px] sm:h-[360px] md:h-[460px] lg:h-[500px] flex items-center justify-center">
+      {/* Three.js Canvas Container - with touch-action pan-y so vertical scrolling works freely on phones */}
       <div 
         ref={containerRef} 
-        className="w-full h-full cursor-grab active:cursor-grabbing select-none"
+        className="w-full h-full cursor-grab active:cursor-grabbing select-none touch-pan-y"
+        style={{ touchAction: 'pan-y' }}
         title="اسحب أو حرك الماوس لتدوير طبق الدش 3D ثلاثي الأبعاد"
       />
 
       {/* Floating 3D HUD Badges */}
-      <div className="absolute top-4 right-4 z-10 bg-[#25213B]/85 backdrop-blur-md border border-white/10 text-white rounded-2xl p-3 shadow-2xl flex items-center gap-3">
-        <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-[#283793] text-[#F49013]">
-          <Radio className="w-5 h-5 animate-pulse" />
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#25213B]"></span>
+      <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-10 bg-[#25213B]/90 backdrop-blur-md border border-white/10 text-white rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-xl flex items-center gap-2 sm:gap-3 pointer-events-none sm:pointer-events-auto">
+        <div className="relative flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#283793] text-[#F49013] shrink-0">
+          <Radio className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
+          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[#25213B]"></span>
         </div>
         <div className="text-right">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-emerald-400">إشارة مقفلة ومستقرة</span>
-            <span className="text-xs bg-[#F49013] text-white px-1.5 py-0.5 rounded font-mono font-bold">{signalStrength}%</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] sm:text-xs font-semibold text-emerald-400">إشارة مستقرة</span>
+            <span className="text-[10px] sm:text-xs bg-[#F49013] text-white px-1.5 py-0.5 rounded font-mono font-bold">{signalStrength}%</span>
           </div>
-          <div className="text-sm font-bold text-white flex items-center gap-1.5">
-            <span>القمر: {satelliteName}</span>
+          <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-1">
+            <span>{satelliteName}</span>
           </div>
         </div>
       </div>
 
       {/* Satellite Switcher Pill */}
-      <div className="absolute bottom-4 right-4 left-4 sm:left-auto z-10 bg-[#25213B]/90 backdrop-blur-md border border-white/10 text-white rounded-2xl p-2.5 shadow-2xl flex flex-wrap items-center justify-between sm:justify-start gap-2">
-        <div className="flex items-center gap-1 text-xs text-gray-300 font-medium px-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#F49013]" />
-          <span>توجيه 3D:</span>
+      <div className="absolute bottom-2 sm:bottom-4 inset-x-2 sm:inset-x-auto sm:right-4 z-10 bg-[#25213B]/95 backdrop-blur-md border border-white/10 text-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 shadow-xl flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2">
+        <div className="hidden xs:flex items-center gap-1 text-[11px] sm:text-xs text-gray-300 font-medium px-1 sm:px-2">
+          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F49013]" />
+          <span>توجيه:</span>
         </div>
-        <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+        <div className="flex items-center gap-1 overflow-x-auto py-0.5 no-scrollbar shrink">
           <button
             onClick={() => switchSatellite('نايل سات 301', 99)}
-            className={`text-xs px-2.5 py-1 rounded-xl transition font-medium ${
+            className={`text-[10px] sm:text-xs px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl transition whitespace-nowrap ${
               satelliteName.includes('نايل')
-                ? 'bg-[#F49013] text-white shadow-sm font-bold'
+                ? 'bg-[#F49013] text-white shadow-xs font-bold'
                 : 'bg-white/10 text-gray-200 hover:bg-white/20'
             }`}
           >
@@ -427,9 +428,9 @@ export const SatelliteHeroCanvas: React.FC = () => {
           </button>
           <button
             onClick={() => switchSatellite('هوتبيرد الأوروبي', 98)}
-            className={`text-xs px-2.5 py-1 rounded-xl transition font-medium ${
+            className={`text-[10px] sm:text-xs px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl transition whitespace-nowrap ${
               satelliteName.includes('هوتبيرد')
-                ? 'bg-[#F49013] text-white shadow-sm font-bold'
+                ? 'bg-[#F49013] text-white shadow-xs font-bold'
                 : 'bg-white/10 text-gray-200 hover:bg-white/20'
             }`}
           >
@@ -437,26 +438,26 @@ export const SatelliteHeroCanvas: React.FC = () => {
           </button>
           <button
             onClick={() => switchSatellite('عرب سات / بدر', 97)}
-            className={`text-xs px-2.5 py-1 rounded-xl transition font-medium ${
+            className={`text-[10px] sm:text-xs px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl transition whitespace-nowrap ${
               satelliteName.includes('عرب')
-                ? 'bg-[#F49013] text-white shadow-sm font-bold'
+                ? 'bg-[#F49013] text-white shadow-xs font-bold'
                 : 'bg-white/10 text-gray-200 hover:bg-white/20'
             }`}
           >
-            بدر سات 26°E
+            بدر 26°E
           </button>
         </div>
         <button
           onClick={() => setIsRotating(!isRotating)}
           title={isRotating ? 'إيقاف الدوران التلقائي' : 'تشغيل الدوران التلقائي'}
-          className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition"
+          className="p-1 sm:p-1.5 rounded-lg sm:rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition shrink-0"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRotating ? 'animate-spin-slow' : ''}`} />
+          <RefreshCw className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${isRotating ? 'animate-spin-slow' : ''}`} />
         </button>
       </div>
 
-      {/* Floating Interactive 3D Hint */}
-      <div className="absolute top-4 left-4 z-10 bg-[#283793]/80 backdrop-blur-md border border-white/15 text-white/90 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
+      {/* Floating Interactive 3D Hint - hidden on mobile to avoid badge clutter */}
+      <div className="hidden sm:flex absolute top-4 left-4 z-10 bg-[#283793]/80 backdrop-blur-md border border-white/15 text-white/90 text-xs px-3 py-1.5 rounded-full items-center gap-1.5 shadow-lg">
         <Eye className="w-3.5 h-3.5 text-[#F49013]" />
         <span>محاكاة طبق دش حقيقي 3D</span>
       </div>

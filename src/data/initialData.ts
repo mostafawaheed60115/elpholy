@@ -18,7 +18,7 @@ export const INITIAL_STORE_CONFIG: StoreConfiguration = {
     features: {
       price: true,
       description: true,
-      salePrice: true,
+      salePrice: false,
       stock: false,
       checkout: false,
       coupons: false
@@ -111,8 +111,8 @@ export const INITIAL_STORE_CONFIG: StoreConfiguration = {
         categoryId: "70eb82ee-e68d-4ab6-9828-1157d0ce8947",
         name: "ريموت دش اختباري 2",
         description: "ريموت كونترول بديل عالي الجودة للرسيفرات وأجهزة الاستقبال الفضائي، خامة متينة وأزرار سيليكون استجابة سريعة ومسافة تحكم واسعة.",
-        price: 120,
-        salePrice: 100,
+        price: 100,
+        salePrice: null,
         stock: null,
         isActive: true,
         images: [
@@ -129,8 +129,8 @@ export const INITIAL_STORE_CONFIG: StoreConfiguration = {
         categoryId: "486268c9-42d7-4b5a-8e95-4185c8535d32",
         name: "طبق دش كاميكس 70",
         description: "طبق دش كاميكس الأصلي قطر 70 سم، معالج بدهان كهروستاتيكي لمقاومة الصدأ وتقلبات الطقس، مع قاعدة تثبيت معدنية صلبة وموجه إشارة فائق الحساسية.",
-        price: 200,
-        salePrice: 185,
+        price: 185,
+        salePrice: null,
         stock: null,
         isActive: true,
         images: [
@@ -147,8 +147,8 @@ export const INITIAL_STORE_CONFIG: StoreConfiguration = {
         categoryId: "70eb82ee-e68d-4ab6-9828-1157d0ce8947",
         name: "ريموت دش اختبار 1",
         description: "ريموت تحكم عن بعد احترافي متوافق مع مجموعة واسعة من أجهزة الاستقبال الرقمية HD، تصميم مريح وخفيف في اليد مع استهلاك طاقة منخفض.",
-        price: 130,
-        salePrice: 115,
+        price: 115,
+        salePrice: null,
         stock: null,
         isActive: true,
         images: [

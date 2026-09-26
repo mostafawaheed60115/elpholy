@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Product, StoreFeatures, Category } from '../types/store';
 import { CONTACT_INFO } from '../data/initialData';
-import { X, MessageCircle, Phone, Share2, Tag, ShieldCheck } from 'lucide-react';
+import { X, MessageCircle, Phone, Share2, ShieldCheck, ShoppingCart } from 'lucide-react';
 
 interface ProductModalProps {
   product: Product | null;
@@ -37,13 +37,16 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const sortedImages = [...product.images].sort((a, b) => a.sortOrder - b.sortOrder);
   const currentImage = sortedImages[selectedImgIndex]?.url || '/logo.jpeg';
 
-  const hasSale = features.salePrice && product.salePrice !== null && product.salePrice < product.price;
-  const unitPrice = hasSale ? product.salePrice : product.price;
-  const originalPrice = hasSale ? product.price : null;
-  const totalPrice = unitPrice ? unitPrice * quantity : 0;
+  const totalPrice = product.price ? product.price * quantity : 0;
 
+  // Retail order message
   const waOrderText = encodeURIComponent(
     `مرحباً الفولي لخدمات الدش،\nأود طلب المنتج التالي:\n- اسم المنتج: ${product.name}\n- الكمية: ${quantity}\n${features.price && totalPrice ? `- إجمالي السعر: ${totalPrice} ج.م\n` : ''}- كود المنتج: ${product.id}\nيرجى التواصل لتأكيد الطلب والتوصيل.`
+  );
+
+  // Wholesale order message requested by user
+  const waWholesaleText = encodeURIComponent(
+    `السلام عليكم ورحمة الله ..ارغب في طلب جملة\nالمنتج: ${product.name}`
   );
 
   const handleShare = () => {
@@ -61,25 +64,25 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs animate-fade-in overflow-y-auto">
       {/* Backdrop */}
-      <div className="absolute inset-0" onClick={onClose} />
+      <div className="fixed inset-0" onClick={onClose} />
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 max-h-[90vh] flex flex-col md:flex-row">
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-y-auto md:overflow-hidden z-10 max-h-[90vh] flex flex-col md:flex-row my-auto">
         
-        {/* Close Button */}
+        {/* Close Button - Optimized for mobile finger tapping */}
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 z-20 p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 shadow-md transition cursor-pointer"
+          className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white text-gray-700 shadow-md transition flex items-center justify-center cursor-pointer border border-gray-100"
           aria-label="إغلاق"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Gallery / Image side */}
-        <div className="md:w-1/2 bg-[#F5F3FA] p-6 flex flex-col items-center justify-between border-b md:border-b-0 md:border-l border-gray-200">
-          <div className="relative w-full aspect-square max-h-[300px] rounded-2xl bg-white p-4 flex items-center justify-center shadow-xs overflow-hidden mb-3">
+        <div className="md:w-1/2 bg-[#F5F3FA] p-3 sm:p-6 flex flex-col items-center justify-between border-b md:border-b-0 md:border-l border-gray-200 shrink-0">
+          <div className="relative w-full aspect-square max-h-[170px] sm:max-h-[240px] md:max-h-[280px] rounded-xl sm:rounded-2xl bg-white p-2.5 sm:p-4 flex items-center justify-center shadow-xs overflow-hidden mb-2 sm:mb-3">
             <img
               src={currentImage}
               alt={product.name}
@@ -88,21 +91,16 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 (e.target as HTMLElement).setAttribute('src', '/logo.jpeg');
               }}
             />
-            {hasSale && (
-              <span className="absolute top-3 right-3 bg-red-600 text-white text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-xs">
-                خصم خاص
-              </span>
-            )}
           </div>
 
           {/* Thumbnails */}
           {sortedImages.length > 1 && (
-            <div className="flex items-center gap-2 overflow-x-auto w-full justify-center py-1">
+            <div className="flex items-center gap-2 overflow-x-auto w-full justify-center py-1 no-scrollbar">
               {sortedImages.map((img, idx) => (
                 <button
                   key={img.id}
                   onClick={() => setSelectedImgIndex(idx)}
-                  className={`w-12 h-12 rounded-xl overflow-hidden bg-white p-1 border-2 transition cursor-pointer ${
+                  className={`w-12 h-12 rounded-xl overflow-hidden bg-white p-1 border-2 transition cursor-pointer shrink-0 ${
                     selectedImgIndex === idx
                       ? 'border-[#283793] scale-105'
                       : 'border-transparent opacity-60 hover:opacity-100'
@@ -114,65 +112,61 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           )}
 
-          <div className="w-full flex items-center justify-center gap-1.5 text-xs text-gray-500 mt-3">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="w-full flex items-center justify-center gap-1.5 text-xs text-gray-500 mt-2 sm:mt-3">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>منتج أصلي معتمد مع ضمان الفولي</span>
           </div>
         </div>
 
         {/* Details side */}
-        <div className="md:w-1/2 p-6 sm:p-7 flex flex-col justify-between overflow-y-auto">
+        <div className="md:w-1/2 p-5 sm:p-7 flex flex-col justify-between overflow-y-auto">
           <div>
             {category && (
-              <span className="inline-block text-xs font-bold text-[#283793] bg-[#E8E4F1] px-2.5 py-0.5 rounded-lg mb-2">
+              <span className="inline-block text-[11px] sm:text-xs font-bold text-[#283793] bg-[#E8E4F1] px-2.5 py-0.5 rounded-lg mb-2">
                 {category.name}
               </span>
             )}
 
-            <h2 className="text-xl sm:text-2xl font-black text-[#25213B] mb-2 leading-snug">
+            <h2 className="text-lg sm:text-xl font-black text-[#25213B] mb-2 leading-snug">
               {product.name}
             </h2>
 
-            {/* Price */}
+            {/* Price (Single regular price, no salePrice) */}
             {features.price && (
-              <div className="flex items-baseline gap-2 mb-4 bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                <span className="text-2xl font-black text-[#283793] font-mono">
-                  {unitPrice}
+              <div className="flex items-baseline gap-1.5 mb-3 sm:mb-4 bg-gray-50 p-2.5 sm:p-3 rounded-2xl border border-gray-100">
+                <span className="text-2xl sm:text-3xl font-black text-[#283793] font-mono">
+                  {product.price}
                 </span>
                 <span className="text-xs font-bold text-gray-500">ج.م</span>
-
-                {hasSale && originalPrice && (
-                  <span className="text-xs line-through text-gray-400 font-mono mr-2">
-                    {originalPrice} ج.م
-                  </span>
-                )}
               </div>
             )}
 
             {/* Description */}
             {features.description && product.description && (
-              <div className="mb-5">
+              <div className="mb-4">
                 <h4 className="text-xs font-bold text-gray-400 mb-1">المواصفات:</h4>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-h-32 overflow-y-auto">
                   {product.description}
                 </p>
               </div>
             )}
 
-            {/* Quantity */}
-            <div className="flex items-center justify-between py-2.5 border-y border-gray-100 mb-5">
+            {/* Quantity Selector */}
+            <div className="flex items-center justify-between py-2 sm:py-2.5 border-y border-gray-100 mb-4">
               <span className="text-xs font-bold text-gray-700">الكمية المطلوبة:</span>
               <div className="flex items-center gap-3 bg-gray-100 p-1 rounded-xl">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-xs hover:bg-gray-50 transition cursor-pointer"
+                  className="w-8 h-8 rounded-lg bg-white font-bold text-gray-700 shadow-xs hover:bg-gray-50 transition cursor-pointer flex items-center justify-center text-sm"
+                  aria-label="تقليل الكمية"
                 >
                   -
                 </button>
                 <span className="w-6 text-center font-bold font-mono text-sm">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-xs hover:bg-gray-50 transition cursor-pointer"
+                  className="w-8 h-8 rounded-lg bg-white font-bold text-gray-700 shadow-xs hover:bg-gray-50 transition cursor-pointer flex items-center justify-center text-sm"
+                  aria-label="زيادة الكمية"
                 >
                   +
                 </button>
@@ -182,19 +176,32 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
           {/* Action CTAs */}
           <div className="space-y-2 pt-1">
+            {/* Wholesale Button */}
+            <a
+              href={`${CONTACT_INFO.whatsappUrl}?text=${waWholesaleText}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2.5 px-3 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 min-h-[42px]"
+            >
+              <ShoppingCart className="w-4 h-4 text-[#F49013]" />
+              <span>لطلبات الجملة تواصل عبر الواتساب</span>
+            </a>
+
+            {/* Retail WhatsApp Order */}
             <a
               href={`${CONTACT_INFO.whatsappUrl}?text=${waOrderText}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20 transition active:scale-95"
+              className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20 transition active:scale-95 min-h-[44px]"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>طلب مباشر عبر واتساب ({totalPrice} ج.م)</span>
+              <span>طلب قطاعي عبر واتساب ({totalPrice} ج.م)</span>
             </a>
 
+            {/* Direct Phone Call */}
             <a
               href={`tel:${CONTACT_INFO.phone}`}
-              className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#25213B] font-bold text-xs text-center flex items-center justify-center gap-1.5 transition"
+              className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#25213B] font-bold text-xs text-center flex items-center justify-center gap-1.5 transition min-h-[40px]"
             >
               <Phone className="w-3.5 h-3.5 text-[#F49013]" />
               <span>اتصال برقم التواصل: <span dir="ltr" className="font-mono font-bold tracking-wider">01004803335</span></span>

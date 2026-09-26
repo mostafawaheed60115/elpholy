@@ -1,7 +1,7 @@
 import React from 'react';
 import { CONTACT_INFO } from '../data/initialData';
 import type { Category } from '../types/store';
-import { Phone, MessageCircle, MapPin, Clock } from 'lucide-react';
+import { Phone, MessageCircle, Clock } from 'lucide-react';
 
 interface FooterProps {
   categories: Category[];
@@ -10,15 +10,15 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ categories, onSelectCategory }) => {
   return (
-    <footer className="bg-[#1e1a32] text-white border-t border-white/10 pt-12 pb-10">
+    <footer className="bg-[#1e1a32] text-white border-t border-white/10 pt-10 sm:pt-12 pb-8 sm:pb-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 sm:pb-10 border-b border-white/10 items-start">
           
           {/* Brand Info */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-2xl bg-white p-1 shadow-lg overflow-hidden shrink-0 flex items-center justify-center border border-white/10">
+              <div className="w-16 h-16 sm:w-22 sm:h-22 rounded-2xl bg-white p-1 shadow-lg overflow-hidden shrink-0 flex items-center justify-center border border-white/10">
                 <img src="/logo.jpeg" alt="الفولي لخدمات الدش" className="w-full h-full object-contain" />
               </div>
               <div>
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ categories, onSelectCategory }) 
             </p>
 
             {/* Social Buttons */}
-            <div className="flex items-center gap-2.5 pt-1">
+            <div className="flex flex-wrap items-center gap-2.5 pt-1">
               <a
                 href={CONTACT_INFO.facebookUrl}
                 target="_blank"
@@ -95,19 +95,37 @@ export const Footer: React.FC<FooterProps> = ({ categories, onSelectCategory }) 
                 <Clock className="w-3.5 h-3.5 text-[#F49013] shrink-0" />
                 <span>مواعيد العمل: يومياً 9 ص - 11 م</span>
               </div>
-
-              <div className="flex items-center gap-2">
-                <MapPin className="w-3.5 h-3.5 text-[#F49013] shrink-0" />
-                <span>خدمة تغطية وتركيب سريعة</span>
-              </div>
             </div>
           </div>
 
         </div>
 
         {/* Minimal Bottom Credits */}
-        <div className="pt-6 text-center text-xs text-gray-500">
-          جميع الحقوق محفوظة © {new Date().getFullYear()} لـ <span className="font-bold text-gray-300">الفولي لخدمات الدش</span> • رقم التواصل: <a href="tel:01004803335" className="text-[#F49013] font-bold font-mono" dir="ltr">01004803335</a>
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400 border-t border-white/5 mt-2">
+          <div className="text-center sm:text-right">
+            جميع الحقوق محفوظة © {new Date().getFullYear()} لـ <span className="font-bold text-gray-200">الفولي لخدمات الدش</span> • رقم التواصل: <a href="tel:01004803335" className="text-[#F49013] font-bold font-mono hover:underline" dir="ltr">01004803335</a>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-gray-400">
+            <span>تم التنفيذ بواسطة</span>
+            <a
+              href="https://nova-solution.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#F49013] font-bold hover:underline"
+            >
+              Nova Solutions
+            </a>
+            <span className="text-gray-600">•</span>
+            <span>للتواصل:</span>
+            <a
+              href="tel:01509999283"
+              className="text-gray-300 font-mono font-bold hover:text-white hover:underline"
+              dir="ltr"
+            >
+              01509999283
+            </a>
+          </div>
         </div>
 
       </div>
