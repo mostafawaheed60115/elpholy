@@ -1,7 +1,7 @@
 import React from 'react';
 import { CONTACT_INFO } from '../data/initialData';
 import type { Category } from '../types/store';
-import { Phone, MessageCircle, Clock } from 'lucide-react';
+import { Phone, MessageCircle, Clock, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   categories: Category[];
@@ -10,9 +10,32 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ categories, onSelectCategory }) => {
   return (
-    <footer className="bg-[#1e1a32] text-white border-t border-white/10 pt-10 sm:pt-12 pb-8 sm:pb-10">
+    <footer className="bg-[#1e1a32] text-white border-t border-white/10 pt-8 sm:pt-10 pb-8 sm:pb-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
+        {/* First content of Footer: Nova Solutions Attribution Bar */}
+        <div className="mb-8 pb-6 border-b border-white/10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base md:text-lg font-bold text-gray-200 text-center">
+          <span className="text-gray-300">تم التنفيذ بواسطة</span>
+          <a
+            href="https://nova-solution.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group/nova relative inline-flex items-center gap-1.5 text-[#F49013] hover:text-[#ffaa3b] font-black px-3 py-1 rounded-xl bg-white/5 hover:bg-white/10 border border-[#F49013]/30 hover:border-[#F49013] transition-all duration-300 transform hover:scale-105 hover:-translate-y-0.5 shadow-xs hover:shadow-md hover:shadow-[#F49013]/20"
+          >
+            <span>Nova Solutions</span>
+            <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover/nova:rotate-12 group-hover/nova:scale-110" />
+          </a>
+          <span className="text-white/30">•</span>
+          <span className="text-gray-300">للتواصل:</span>
+          <a
+            href="tel:01509999283"
+            dir="ltr"
+            className="font-mono font-black text-white hover:text-[#F49013] transition-colors duration-200 tracking-wider hover:underline"
+          >
+            01509999283
+          </a>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 sm:pb-10 border-b border-white/10 items-start">
           
           {/* Brand Info */}
@@ -100,32 +123,9 @@ export const Footer: React.FC<FooterProps> = ({ categories, onSelectCategory }) 
 
         </div>
 
-        {/* Minimal Bottom Credits */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400 border-t border-white/5 mt-2">
-          <div className="text-center sm:text-right">
-            جميع الحقوق محفوظة © {new Date().getFullYear()} لـ <span className="font-bold text-gray-200">الفولي لخدمات الدش</span> • رقم التواصل: <a href="tel:01004803335" className="text-[#F49013] font-bold font-mono hover:underline" dir="ltr">01004803335</a>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-gray-400">
-            <span>تم التنفيذ بواسطة</span>
-            <a
-              href="https://nova-solution.net"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#F49013] font-bold hover:underline"
-            >
-              Nova Solutions
-            </a>
-            <span className="text-gray-600">•</span>
-            <span>للتواصل:</span>
-            <a
-              href="tel:01509999283"
-              className="text-gray-300 font-mono font-bold hover:text-white hover:underline"
-              dir="ltr"
-            >
-              01509999283
-            </a>
-          </div>
+        {/* Minimal Bottom Copyright */}
+        <div className="pt-6 text-center text-xs text-gray-400 border-t border-white/5 mt-2">
+          جميع الحقوق محفوظة © {new Date().getFullYear()} لـ <span className="font-bold text-gray-200">الفولي لخدمات الدش</span> • رقم التواصل: <a href="tel:01004803335" className="text-[#F49013] font-bold font-mono hover:underline" dir="ltr">01004803335</a>
         </div>
 
       </div>
