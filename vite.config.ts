@@ -8,5 +8,17 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/public/stores': {
+        target: 'https://stores.nova-solution.net',
+        changeOrigin: true,
+      },
+      '/stores': {
+        target: 'https://stores.nova-solution.net',
+        changeOrigin: true,
+      }
+    }
+  }
 })
 

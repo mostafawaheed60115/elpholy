@@ -3,6 +3,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/public/stores/:path*",
+      "destination": "https://stores.nova-solution.net/public/stores/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

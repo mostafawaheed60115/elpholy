@@ -107,55 +107,55 @@ export const INITIAL_STORE_CONFIG: StoreConfiguration = {
     ],
     products: [
       {
-        id: "56a1c4af-d1ff-4fa7-ad34-2d55f9f627e1",
-        categoryId: "70eb82ee-e68d-4ab6-9828-1157d0ce8947",
-        name: "ريموت دش اختباري 2",
-        description: "ريموت كونترول بديل عالي الجودة للرسيفرات وأجهزة الاستقبال الفضائي، خامة متينة وأزرار سيليكون استجابة سريعة ومسافة تحكم واسعة.",
-        price: 100,
+        id: "4f97c529-1125-4e63-ae27-5ff63e321b9a",
+        categoryId: "b74d8d10-d919-4905-99ae-dfc52c923a8d",
+        name: "رسيفر RAYA Pro",
+        description: "رسيفر RAYA Pro - قوة الأداء وصفاء الصورة. استمتع بتجربة مشاهدة مذهلة ومباشرة بأعلى جودة مع رسيفر RAYA Pro المصنع بواسطة شركة ترومان العريقة! يدعم 4K Ultra HD و 1080P Full HD لصورة ناطقة وتفاصيل دقيقة.",
+        price: 600,
         salePrice: null,
         stock: null,
         isActive: true,
         images: [
           {
-            id: "68b0aceb-283c-4632-8324-9fd3150d6722",
-            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/56a1c4af-d1ff-4fa7-ad34-2d55f9f627e1/68b0aceb-283c-4632-8324-9fd3150d6722.webp",
-            title: "ريموت دش اختباري 2",
+            id: "f9895491-027f-4c47-a2b5-35417790eea5",
+            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/4f97c529-1125-4e63-ae27-5ff63e321b9a/f9895491-027f-4c47-a2b5-35417790eea5.webp",
+            title: "رسيفر RAYA Pro",
             sortOrder: 0
           }
         ]
       },
       {
-        id: "892c0313-c5be-49c4-8c47-08c0ba28d38b",
+        id: "0a89fc13-e918-4d59-8259-ad253c1b3f03",
         categoryId: "486268c9-42d7-4b5a-8e95-4185c8535d32",
-        name: "طبق دش كاميكس 70",
-        description: "طبق دش كاميكس الأصلي قطر 70 سم، معالج بدهان كهروستاتيكي لمقاومة الصدأ وتقلبات الطقس، مع قاعدة تثبيت معدنية صلبة وموجه إشارة فائق الحساسية.",
-        price: 185,
+        name: "طبق دش كامكس طبق ٧٠ سم بالقاعدةSteel",
+        description: "طبق استقبال الأقمار الصناعية Camex بقطر 70 سم بقاعدة فولاذية متينة في مصر. مصمم لاستقبال إشارة مستقرة، مثالي للاستخدام المنزلي أو التجاري.",
+        price: 319.96,
         salePrice: null,
         stock: null,
         isActive: true,
         images: [
           {
-            id: "884ba4d2-8a5f-43be-8fed-08cb523b2643",
-            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/892c0313-c5be-49c4-8c47-08c0ba28d38b/884ba4d2-8a5f-43be-8fed-08cb523b2643.webp",
-            title: "طبق دش كاميكس 70 سم أصلي",
+            id: "fcfa7a2a-1f8a-45fe-bed9-c03b1fdcd0e0",
+            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/0a89fc13-e918-4d59-8259-ad253c1b3f03/fcfa7a2a-1f8a-45fe-bed9-c03b1fdcd0e0.webp",
+            title: "طبق دش كامكس 70 سم بالقاعدة",
             sortOrder: 0
           }
         ]
       },
       {
-        id: "b461e944-5a9e-44bc-a240-12d82747e5e4",
-        categoryId: "70eb82ee-e68d-4ab6-9828-1157d0ce8947",
-        name: "ريموت دش اختبار 1",
-        description: "ريموت تحكم عن بعد احترافي متوافق مع مجموعة واسعة من أجهزة الاستقبال الرقمية HD، تصميم مريح وخفيف في اليد مع استهلاك طاقة منخفض.",
-        price: 115,
+        id: "322c21e6-5801-4730-a459-85ef3648180f",
+        categoryId: "486268c9-42d7-4b5a-8e95-4185c8535d32",
+        name: "طبق ٧٠ سم برفكس بالقاعدة Steel",
+        description: "طبق استقبال الأقمار الصناعية Prifix بقطر 70 سم بقاعدة فولاذية متينة في مصر. مصمم لاستقبال إشارة مستقرة، مثالي للاستخدام المنزلي أو التجاري.",
+        price: 330,
         salePrice: null,
         stock: null,
         isActive: true,
         images: [
           {
-            id: "1952164f-8c1b-4d50-b69b-d28c38d2c392",
-            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/b461e944-5a9e-44bc-a240-12d82747e5e4/1952164f-8c1b-4d50-b69b-d28c38d2c392.webp",
-            title: "ريموت دش اختبار 1",
+            id: "9e8df1e5-b5b7-499d-b72a-f51b270542e7",
+            url: "https://r2.nova-solution.net/stores/59325b75-e28f-4484-8c77-fbb3698c6c39/products/322c21e6-5801-4730-a459-85ef3648180f/9e8df1e5-b5b7-499d-b72a-f51b270542e7.webp",
+            title: "طبق 70 سم برفكس بالقاعدة",
             sortOrder: 0
           }
         ]
