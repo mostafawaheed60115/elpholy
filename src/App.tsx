@@ -10,7 +10,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import type { Product } from './types/store';
 
 export function App() {
-  const { catalog, features } = useCatalog();
+  const { catalog, features, fetchError, isLoading, refreshCatalog } = useCatalog();
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -19,8 +19,12 @@ export function App() {
     ? catalog.categories.find((c) => c.id === selectedCategoryId)
     : null;
 
-  const activeCategoryForModal = quickViewProduct
-    ? catalog.categories.find((c) => c.id === quickViewProduct.categoryId)
+  const visibleQuickViewProduct = quickViewProduct
+    ? catalog.products.find((product) => product.id === quickViewProduct.id) ?? null
+    : null;
+
+  const activeCategoryForModal = visibleQuickViewProduct
+    ? catalog.categories.find((category) => category.id === visibleQuickViewProduct.categoryId)
     : undefined;
 
   return (
@@ -30,6 +34,27 @@ export function App() {
         selectedCategoryName={selectedCategory?.name || null}
         onBackToHome={() => setSelectedCategoryId(null)}
       />
+
+      {fetchError ? (
+        <div
+          role="alert"
+          className="mx-auto mt-4 flex w-[min(92%,80rem)] flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950 shadow-sm"
+        >
+          <p>{fetchError}</p>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => void refreshCatalog()}
+            className="rounded-lg bg-amber-900 px-3 py-2 font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      ) : isLoading ? (
+        <p role="status" className="mx-auto mt-4 w-[min(92%,80rem)] text-sm text-slate-600" aria-live="polite">
+          جارٍ تحميل أحدث بيانات المتجر…
+        </p>
+      ) : null}
 
       {/* Main Content Area */}
       <main className="flex-1">
@@ -72,7 +97,7 @@ export function App() {
 
       {/* Product Details Popup (Modal) */}
       <ProductModal
-        product={quickViewProduct}
+        product={visibleQuickViewProduct}
         category={activeCategoryForModal}
         features={features}
         onClose={() => setQuickViewProduct(null)}
