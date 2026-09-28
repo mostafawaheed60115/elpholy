@@ -19,6 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const sortedImages = [...product.images].sort((a, b) => a.sortOrder - b.sortOrder);
   const primaryImage = sortedImages[0]?.url || '/logo.jpeg';
+  const hasPrice = Number.isFinite(product.price) && product.price > 0;
 
   // Standard retail order message
   const waRetailText = encodeURIComponent(
@@ -86,10 +87,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {/* Price (Only regular price, no salePrice) */}
             {features.price && (
               <div className="flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-black text-[#283793] font-mono">
-                  {product.price}
-                </span>
-                <span className="text-xs font-bold text-gray-600">ج.م</span>
+                {hasPrice ? (
+                  <>
+                    <span className="text-xl sm:text-2xl font-black text-[#283793] font-mono">
+                      {product.price}
+                    </span>
+                    <span className="text-xs font-bold text-gray-600">ج.م</span>
+                  </>
+                ) : (
+                  <span className="text-sm sm:text-base font-bold text-gray-600">السعر عند الطلب</span>
+                )}
               </div>
             )}
 

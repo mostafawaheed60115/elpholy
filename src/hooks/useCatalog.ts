@@ -57,7 +57,12 @@ function buildConfiguration(menuData: any, storeData: any = null): StoreConfigur
     ? menuData.products.map((product: any) => {
         let images: ProductImage[] = [];
         if (Array.isArray(product.images) && product.images.length > 0) {
-          images = product.images;
+          images = product.images.map((image: any, index: number) => ({
+            id: image.id || `${product.id}-img-${index}`,
+            url: image.url || image.img_url || image.image_url || '',
+            title: image.title || image.img_title || null,
+            sortOrder: Number(image.sortOrder ?? image.sort_order ?? index),
+          })).filter((image: ProductImage) => image.url);
         } else if (product.image_url || product.imageUrl) {
           images = [{
             id: `${product.id}-img-0`,

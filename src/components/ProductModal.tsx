@@ -17,6 +17,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
 }) => {
   const [selectedImgIndex, setSelectedImgIndex] = useState(0);
+  const [productImages, setProductImages] = useState(product?.images ?? []);
   const [quantity, setQuantity] = useState(1);
   const [copied, setCopied] = useState(false);
 
@@ -24,6 +25,45 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     setSelectedImgIndex(0);
     setQuantity(1);
     setCopied(false);
+
+    if (product) {
+      setProductImages(product.images);
+      const controller = new AbortController();
+      const storeSlug = import.meta.env.VITE_STORE_SLUG || 'elpholy';
+
+      fetch(`/public/stores/${storeSlug}/products/${encodeURIComponent(product.id)}`, {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal,
+      })
+        .then((response) => (response.ok ? response.json() : null))
+        .then((details) => {
+          if (!Array.isArray(details?.images)) return;
+
+          const images = details.images
+            .map((image: any, index: number) => ({
+              id: image.id || `${product.id}-img-${index}`,
+              url: image.url || image.img_url || image.image_url || '',
+              title: image.title || image.img_title || null,
+              sortOrder: Number(image.sortOrder ?? image.sort_order ?? index),
+            }))
+            .filter((image: (typeof product.images)[number]) => image.url)
+            .sort((first: any, second: any) => first.sortOrder - second.sortOrder);
+
+          if (images.length > 0) setProductImages(images);
+        })
+        .catch(() => {
+          // Keep the catalog image available if the detail request is unavailable.
+        });
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        controller.abort();
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -34,10 +74,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
   if (!product) return null;
 
-  const sortedImages = [...product.images].sort((a, b) => a.sortOrder - b.sortOrder);
+  const sortedImages = [...productImages].sort((a, b) => a.sortOrder - b.sortOrder);
   const currentImage = sortedImages[selectedImgIndex]?.url || '/logo.jpeg';
 
-  const totalPrice = product.price ? product.price * quantity : 0;
+  const hasPrice = Number.isFinite(product.price) && product.price > 0;
+  const totalPrice = hasPrice ? product.price * quantity : null;
 
   // Retail order message
   const waOrderText = encodeURIComponent(
@@ -134,10 +175,16 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             {/* Price (Single regular price, no salePrice) */}
             {features.price && (
               <div className="flex items-baseline gap-1.5 mb-3 sm:mb-4 bg-gray-50 p-2.5 sm:p-3 rounded-2xl border border-gray-100">
-                <span className="text-2xl sm:text-3xl font-black text-[#283793] font-mono">
-                  {product.price}
-                </span>
-                <span className="text-xs font-bold text-gray-500">ج.م</span>
+                {hasPrice ? (
+                  <>
+                    <span className="text-2xl sm:text-3xl font-black text-[#283793] font-mono">
+                      {product.price}
+                    </span>
+                    <span className="text-xs font-bold text-gray-500">ج.م</span>
+                  </>
+                ) : (
+                  <span className="text-sm sm:text-base font-bold text-gray-600">السعر عند الطلب</span>
+                )}
               </div>
             )}
 
@@ -195,7 +242,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20 transition active:scale-95 min-h-[44px]"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>طلب قطاعي عبر واتساب ({totalPrice} ج.م)</span>
+              <span>
+                طلب قطاعي عبر واتساب{totalPrice !== null ? ` (${totalPrice} ج.م)` : ''}
+              </span>
             </a>
 
             {/* Direct Phone Call */}
